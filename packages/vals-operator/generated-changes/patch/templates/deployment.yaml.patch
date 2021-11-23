@@ -1,0 +1,17 @@
+--- charts-original/templates/deployment.yaml
++++ charts/templates/deployment.yaml
+@@ -37,8 +37,14 @@
+           {{- end }}
+           env:
+             {{- toYaml .Values.env | nindent 12 }}
++          {{- if .Values.environmentSecret }}
++          envFrom:
++            - secretRef:
++                name: "{{ .Values.environmentSecret }}"
++          {{- else }}
+           envFrom:
+             {{- toYaml .Values.secretEnv | nindent 12 }}
++          {{- end }}
+           resources:
+             {{- toYaml .Values.resources | nindent 12 }}
+           {{- if .Values.volumeMounts }}
